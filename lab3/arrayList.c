@@ -36,7 +36,6 @@ void removeElement(arrayList * arylstP, int index)
 {
    return;
 }
-      
 
 void printArray(arrayList * arylstP)
 {
