@@ -1,11 +1,10 @@
 CC=gcc
 CFLAGS=-g -O1 -Wall
-OBJ=arrayList.o 
-arrayList: $(OBJ)
+arrayList: main.o 
 
 main.o:arrayList.h
 
 arrayList.o: arrayList.h
 
 clean:
-	rm -f $(OBJ) arrayList
+	rm -f *.o arrayList
