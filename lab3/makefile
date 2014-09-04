@@ -1,10 +1,10 @@
 CC=gcc
 CFLAGS=-g -O1 -Wall
-arrayList: main.o 
+arrayList:main.o
 
 main.o:arrayList.h
 
-arrayList.o: arrayList.h
+arrayList.o:arrayList.h
 
 clean:
 	rm -f *.o arrayList
