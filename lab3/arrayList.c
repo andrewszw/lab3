@@ -13,7 +13,8 @@ arrayList * initialize(primitiveType type)
     al->numElements = 0;
     al->type = type;
     al->elementSize = getSize(type);
-    al = malloc((al->elementSize)*4); 
+    //al = malloc((al->elementSize)*4); 
+    al -> array = (void*)malloc((getSize(type)) * al ->arraySize);
     return al;
 }
 
@@ -23,8 +24,10 @@ int getSize(primitiveType type)
         return sizeof(char);
     else if(type == shortType)
         return sizeof(short);
-    else
+    else if(type == intType)
         return sizeof(int);
+    else
+        return 0;
 }
 
 void addElement(arrayList * arylstP, void * element)
@@ -32,11 +35,15 @@ void addElement(arrayList * arylstP, void * element)
    int i;
    if(arylstP -> numElements == arylstP -> arraySize)
    {
-       char * newarray = (char *) malloc(2* arylstP -> numElements * arylstP -> elementSize);
+       char * newarray = (char *) malloc(2 * arylstP -> numElements * arylstP -> elementSize);
+       
        for(i = 0; i < (arylstP -> numElements * arylstP -> elementSize); i++)
        {
-           newarray[i] = ((char *)arylstP->array)[i];
+           newarray[i] = ((char *)arylstP->array)[i]; 
        }
+       free(arylstP -> array);
+       arylstP->array = newarray;
+       arylstP->arraySize = arylstP -> arraySize*2;
    }
    if(arylstP -> type == charType)
    {
@@ -50,29 +57,58 @@ void addElement(arrayList * arylstP, void * element)
    {
        ((int *)arylstP -> array)[arylstP -> numElements] = *((int *)element);
    }
+   arylstP -> numElements++;
 }
 
 void removeElement(arrayList * arylstP, int index)
 {
-   return;
+   int i;
+   for(i = index; i < arylstP ->numElements - 1; i++)
+   {
+       if(arylstP -> type == charType)
+       {
+           char* value = (char*) arylstP -> array;
+           value[i] = value[i + 1];
+       }
+       else if(arylstP -> type == shortType)
+       {
+           short* value = (short*) arylstP -> array;
+           value[i] = value[i + 1];
+       }
+       else if(arylstP -> type == intType)
+       {
+           int* value = (int*) arylstP -> array;
+           value[i] = value[i + 1];
+       }
+   }
+   arylstP -> numElements--;
 }
 
 void printArray(arrayList * arylstP)
 {
    int i;
+   char* temp1;
+   short* temp2;
+   int* temp3;
    printf("array size: %d, num elements: %d contents: ", 
           arylstP->arraySize, arylstP->numElements);
    for (i = 0; i < arylstP->numElements; i++)
    {
       if (arylstP->type == charType)
-         //fill in the missing code that gets the element and &s it with 0xff
-         printf("%02x ", 0xff);
+      {
+         temp1 = (char*)arylstP -> array;
+         printf("%02x ", (char)temp1[i] & 0xff);
+      }
       else if (arylstP->type == shortType)
-         //fill in the missing code that gets the element and &s it with 0xffff
-         printf("%04x ", 0xffff);
+      {
+         temp2 = (short*)arylstP -> array;
+         printf("%04x ", (short)temp2[i] & 0xffff);
+      }
       else if (arylstP->type == intType)
-         //fill in the missing code that gets the element and &s it with 0xffffffff
-         printf("%08x ", 0xffffffff);
+      {
+         temp3 = (int*)arylstP -> array;
+         printf("%08x ", (int)temp3[i] & 0xffffffff);
+      }
    }
    printf("\n");
 }
