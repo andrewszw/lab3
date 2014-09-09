@@ -13,7 +13,7 @@ arrayList * initialize(primitiveType type)
     al->numElements = 0;
     al->type = type;
     al->elementSize = getSize(type);
-    al = malloc(getSize(type)*4); 
+    al = malloc((al->elementSize)*4); 
     return al;
 }
 
@@ -29,7 +29,27 @@ int getSize(primitiveType type)
 
 void addElement(arrayList * arylstP, void * element)
 {
-   return;
+   int i;
+   if(arylstP -> numElements == arylstP -> arraySize)
+   {
+       char * newarray = (char *) malloc(2* arylstP -> numElements * arylstP -> elementSize);
+       for(i = 0; i < (arylstP -> numElements * arylstP -> elementSize); i++)
+       {
+           newarray[i] = ((char *)arylstP->array)[i];
+       }
+   }
+   if(arylstP -> type == charType)
+   {
+       ((char *)arylstP -> array)[arylstP -> numElements] = *((char *)element);
+   }
+   else if(arylstP -> type == shortType)
+   {
+       ((short *)arylstP -> array)[arylstP -> numElements] = *((short *)element);
+   }
+   else if(arylstP -> type == intType)
+   {
+       ((int *)arylstP -> array)[arylstP -> numElements] = *((int *)element);
+   }
 }
 
 void removeElement(arrayList * arylstP, int index)
